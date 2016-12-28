@@ -5,8 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
+var index = require('./routes/index');
 
 var app = express();
 
@@ -22,8 +21,32 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/users', users);
+app.use('/', function(req, res) {
+  var date = new Date();
+  var season = "Winter"
+  //Japan has four television seasons: 
+  //  Winter (January–March), 
+  //  Spring (April–June), 
+  //  Summer (July–September), 
+  //  Fall (October–December).
+  switch (date.getMonth()){
+    case 3: case 4: case 5:
+      season = "Spring";
+    case 6: case 7: case 8:
+      season = "Summer";
+    case 9: case 10: case 11:
+      season = "Fall";
+  }
+  res.render('index', {
+    title: "Grani",
+    season: season,
+    year: date.getFullYear()
+  });
+});
+
+app.use('/', function(req, res) {
+  res.render()
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

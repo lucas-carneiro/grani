@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-    <p>Current Season: <%= season + " " + year %></p>
-  </body>
+    <head>
+        <title><%= title %></title>
+        <link rel='stylesheet' href='/stylesheets/style.css' />
+    </head>
+    <body>
+        <h1><%= title %></h1>
+        <p>Welcome to <%= title %></p>
+        <p>Current Season: <%= season + " " + year %></p>
+        <% animes.forEach(function(anime) { %>
+            <p><%= anime.title_english %></p>
+        <% }); %>
+    </body>
 </html>

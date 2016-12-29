@@ -1,5 +1,11 @@
 # Copied from https://github.com/github/gitignore (Node.gitignore)
 
+# Never push your credentials to a public repo!
+credentials.json
+
+# Folder generated and used by node-localstorage
+storage/
+
 # Logs
 logs
 *.log

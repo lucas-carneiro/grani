@@ -5,6 +5,7 @@ if (typeof localStorage === "undefined" || localStorage === null) {
     var LocalStorage = require('node-localstorage').LocalStorage;
     localStorage = new LocalStorage('./storage');
 }
+var Promise = require('promise');
 
 exports.getAnimesSeason = function(season, year, callback) {
 
@@ -14,7 +15,7 @@ exports.getAnimesSeason = function(season, year, callback) {
     console.log (currentUTC + " > " + expireTokenTime);
 
     if (currentUTC > expireTokenTime)
-        getNewToken();
+        getNewToken().done();
 
     var apiUrl = "https://anilist.co/api/browse/anime?type=tv" 
             + "&season=" + season
@@ -26,6 +27,8 @@ exports.getAnimesSeason = function(season, year, callback) {
             'Authorization': localStorage.getItem('token')
         }
     };
+
+    console.log("Connecting to " + apiUrl);
 
     request(options, function (error, response, body) {
 
@@ -41,30 +44,41 @@ exports.getAnimesSeason = function(season, year, callback) {
 }
 
 function getNewToken(){
-    console.log('Getting new token...');
+    return new Promise(function(resolve, reject){
+        console.log('Getting new token...');
 
-    var apiUrl = "https://anilist.co/api/auth/access_token";
+        var apiUrl = "https://anilist.co/api/auth/access_token";
 
-    var options = {
-        url: apiUrl,
-        formData:{
-            grant_type: 'client_credentials',
-            client_id: credentials.client_id,
-            client_secret: credentials.client_secret
-        }
-    };
+        var options = {
+            url: apiUrl,
+            formData:{
+                grant_type: 'client_credentials',
+                client_id: credentials.client_id,
+                client_secret: credentials.client_secret
+            }
+        };
 
-    request.post(options, function (error, response, body) {
+        request.post(options, function (error, response, body) {
 
-        if (!error && response.statusCode == 200) {
+            if (!error) {
+                if (response.statusCode == 200){
+                    console.log("Sucessful response from " + apiUrl);
 
-            console.log("Sucessful response from " + apiUrl);
+                    var tokenInfo = JSON.parse(body);
+                    var accessToken = tokenInfo.token_type + ' ' + tokenInfo.access_token;
 
-            var tokenInfo = JSON.parse(body);
-            var accessToken = tokenInfo.token_type + ' ' + tokenInfo.access_token;
+                    localStorage.setItem('token', accessToken);
+                    localStorage.setItem('expireTokenTime', tokenInfo.expires);  
 
-            localStorage.setItem('token', accessToken);
-            localStorage.setItem('expireTokenTime', tokenInfo.expires);   
-        }
+                    console.log("End of token request.");
+                    resolve();
+                }
+                else
+                    reject(response.statusCode);
+            }
+            else
+                reject(error);
+        });
+
     });
 }

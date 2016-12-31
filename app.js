@@ -12,6 +12,7 @@ if (typeof localStorage === "undefined" || localStorage === null) {
 
 //Routes
 var index = require('./routes/index');
+var torrent = require('./routes/torrent');
 
 //Setting expireTokenTime on local storage if it's empty
 if (localStorage.getItem('expireTokenTime') == null)
@@ -32,6 +33,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
+app.use('/torrent', torrent);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

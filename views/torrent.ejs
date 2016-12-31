@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%= title %></title>
+        <link rel='stylesheet' href='/stylesheets/style.css' />
+    </head>
+    <body>
+        <h1><%= title %></h1>
+        <p>Welcome to <%= title %>!</p>
+        <p>Torrents for <%= anime %> episode <%= episode %>:</p><br><br>
+        <table style="text-align:center;">
+            <tr>
+                <th>Name</th>
+                <th>Content</th>
+                <th>Link</th>
+            </tr>
+            <% torrents.forEach(function(torrent) { %>
+                <tr>
+                    <td><%= torrent.title %></td>
+                    <td><%= torrent.content %></td>
+                    <td><a href="<%= torrent.link %>">Download</a></td>
+                </tr>
+            <% }); %>
+        </table>
+    </body>
+</html>

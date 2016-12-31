@@ -12,11 +12,19 @@ exports.getAnimesSeason = function(season, year, callback) {
     var expireTokenTime = localStorage.getItem('expireTokenTime');
     var currentUTC = Math.floor(Date.now() / 1000);
 
-    console.log (currentUTC + " > " + expireTokenTime);
+    console.log (currentUTC + " > " + expireTokenTime + "?");
 
     if (currentUTC > expireTokenTime)
-        getNewToken().done();
+        getNewToken().done(
+            getAnimes(season, year, callback),
+            function(error){
+                throw new Error(error);
+            });
+    else
+        getAnimes(season, year, callback);
+}
 
+function getAnimes(season, year, callback){
     var apiUrl = "https://anilist.co/api/browse/anime?type=tv" 
             + "&season=" + season
             + "&year=" + year;
@@ -79,6 +87,5 @@ function getNewToken(){
             else
                 reject(error);
         });
-
     });
 }

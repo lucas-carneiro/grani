@@ -6,10 +6,23 @@
     </head>
     <body>
         <h1><%= title %></h1>
-        <p>Welcome to <%= title %></p>
-        <p>Current Season: <%= season + " " + year %></p>
-        <% animes.forEach(function(anime) { %>
-            <p><%= anime.title_english %></p>
-        <% }); %>
+        <p>Welcome to <%= title %>!</p>
+        <p>Current Season: <%= season + " " + year %></p><br><br>
+        <table style="text-align:center;">
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Number of Episodes</th>
+                <th>Track?</th>
+            </tr>
+            <% animes.forEach(function(anime) { %>
+                <tr>
+                    <td><img src="<%= anime.image_url_lge %>" alt="<%= anime.title_romaji %>"></td>
+                    <td><%= anime.title_romaji %></td>
+                    <td><%= anime.total_episodes %></td>
+                    <td><input type="checkbox" name="<%= anime.id %>" value=""></td>
+                </tr>
+            <% }); %>
+        </table>
     </body>
 </html>

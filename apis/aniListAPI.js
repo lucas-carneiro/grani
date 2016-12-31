@@ -16,7 +16,7 @@ exports.getAnimesSeason = function(season, year, callback) {
 
     if (currentUTC > expireTokenTime)
         getNewToken().done(
-            getAnimes(season, year, callback),
+            getAnimes.bind(null, season, year, callback),
             function(error){
                 throw new Error(error);
             });

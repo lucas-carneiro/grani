@@ -41,7 +41,7 @@ function postAsync(){
         req.onreadystatechange = function() {
             if(req.readyState == XMLHttpRequest.DONE){
                 if (req.status == 200){
-                    console.log("Form succesfully sent!");
+                    alert(req.responseText);
                 }
                 else{
                     console.log("XHR error: " + req.status + " " +req.statusText);

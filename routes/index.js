@@ -1,5 +1,9 @@
 //Libraries
 var express = require('express');
+if (typeof localStorage === "undefined" || localStorage === null) {
+    var LocalStorage = require('node-localstorage').LocalStorage;
+    localStorage = new LocalStorage('./storage');
+}
 
 //APIs
 var aniListAPI = require("../apis/aniListAPI.js");
@@ -46,7 +50,9 @@ router.post('/', function(req, res, next) {
         console.log(attrName + ": " + attrValue);
     }
 
-    res.send(req.body);
+    localStorage.setItem(req.body.nickname, JSON.stringify(req.body));
+
+    res.send("Animes successfully saved! Enjoy " + req.body.nickname + "!");
 });
 
 module.exports = router;

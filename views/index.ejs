@@ -2,27 +2,31 @@
 <html>
     <head>
         <title><%= title %></title>
+        <script src="/javascripts/ajaxForm.js" type="text/javascript" charset="utf-8" async defer></script>
         <link rel='stylesheet' href='/stylesheets/style.css' />
     </head>
     <body>
         <h1><%= title %></h1>
         <p>Welcome to <%= title %>!</p>
         <p>Current Season: <%= season + " " + year %></p><br><br>
-        <table style="text-align:center;">
-            <tr>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Number of Episodes</th>
-                <th>Track?</th>
-            </tr>
-            <% animes.forEach(function(anime) { %>
+        <form>
+            <table id="animeForm" style="text-align:center;">
                 <tr>
-                    <td><img src="<%= anime.image_url_lge %>" alt="<%= anime.title_romaji %>"></td>
-                    <td><%= anime.title_romaji %></td>
-                    <td><%= anime.total_episodes %></td>
-                    <td><input type="checkbox" name="<%= anime.id %>" value=""></td>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Number of Episodes</th>
+                    <th>Track?</th>
                 </tr>
-            <% }); %>
-        </table>
+                <% animes.forEach(function(anime) { %>
+                    <tr>
+                        <td><img src="<%= anime.image_url_lge %>" title="<%= anime.title_romaji %>" alt="<%= anime.title_romaji %>"></td>
+                        <td><%= anime.title_romaji %></td>
+                        <td><%= anime.total_episodes %></td>
+                        <td><input type="checkbox" name="<%= anime.id %>"></td>
+                    </tr>
+                <% }); %>
+            </table>
+        </form>
+        <button type="button" onclick="postAsync();">Send Animes</button>
     </body>
 </html>

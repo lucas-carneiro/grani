@@ -37,4 +37,13 @@ router.get('/', function(req, res, next) {
     });
 });
 
+router.post('/', function(req, res, next) {
+
+    var anime = req.body.anime;
+    var episode = req.body.episode;
+
+    // res.send(anime + ' ' + episode);
+    res.send(req.body);
+});
+
 module.exports = router;

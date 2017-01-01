@@ -51,6 +51,48 @@ function getAnimes(season, year, callback){
     });
 }
 
+exports.getAnimeDetails = function(id, callback) {
+
+    var expireTokenTime = localStorage.getItem('expireTokenTime');
+    var currentUTC = Math.floor(Date.now() / 1000);
+
+    console.log (currentUTC + " > " + expireTokenTime + "?");
+
+    if (currentUTC > expireTokenTime)
+        getNewToken().done(
+            getAnime.bind(null, id, callback),
+            function(error){
+                throw new Error(error);
+            });
+    else
+        getAnime(id, callback);
+}
+
+function getAnime(id, callback){
+    var apiUrl = "https://anilist.co/api/anime/" + id;
+
+    var options = {
+        url: apiUrl,
+        headers:{
+            'Authorization': localStorage.getItem('token')
+        }
+    };
+
+    console.log("Connecting to " + apiUrl);
+
+    request(options, function (error, response, body) {
+
+        if (!error && response.statusCode == 200) {
+
+            console.log("Sucessful response from " + apiUrl);
+
+            var details = JSON.parse(body);
+
+            callback(details);       
+        }
+    });
+}
+
 function getNewToken(){
     return new Promise(function(resolve, reject){
         console.log('Getting new token...');

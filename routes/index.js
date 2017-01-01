@@ -7,6 +7,7 @@ if (typeof localStorage === "undefined" || localStorage === null) {
 
 //APIs
 var aniListAPI = require("../apis/aniListAPI.js");
+var nyaaAPI = require("../apis/nyaaAPI.js");
 
 var router = express.Router();
 
@@ -14,7 +15,8 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
 
     var date = new Date();
-    var season = "Winter"
+    var season = "Winter";
+    var year = date.getFullYear();
 
     //Japan has four television seasons: 
     //  Winter (January–March), 
@@ -31,11 +33,14 @@ router.get('/', function(req, res, next) {
           season = "Fall";
     }
 
-    aniListAPI.getAnimesSeason(season, date.getFullYear(), function(animes){
+    season = "Fall";
+    year = 2016;
+
+    aniListAPI.getAnimesSeason(season, year, function(animes){
         res.render('index', {
             title: "Grani",
             season: season,
-            year: date.getFullYear(),
+            year: year,
             animes: animes
         });
     });
@@ -44,15 +49,21 @@ router.get('/', function(req, res, next) {
 /* POST form. */
 router.post('/', function(req, res, next) {
 
-    for (var key in req.body){
-        var attrName = key;
-        var attrValue = req.body[key];
-        console.log(attrName + ": " + attrValue);
+    for (var id in req.body){
+        // Ignoring nickname input
+        if (id != "nickname")
+            aniListAPI.getAnimeDetails(id, function(details){
+                // nyaaAPI.checkTorrent(details.title_romaji, "" + details.airing.next_episode, details.airing.countdown);
+                // Casting to string
+                nyaaAPI.checkTorrent(details.title_romaji, "" + 7, 0);
+            });
     }
 
-    localStorage.setItem(req.body.nickname, JSON.stringify(req.body));
+    // TODO many users case
+    // localStorage.setItem(req.body.nickname, JSON.stringify(req.body));
+    localStorage.setItem("user", JSON.stringify(req.body));
 
-    res.send("Animes successfully saved! Enjoy " + req.body.nickname + "!");
+    res.send("Animes successfully saved! Enjoy, " + req.body.nickname + "!");
 });
 
 module.exports = router;

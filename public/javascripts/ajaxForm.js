@@ -1,9 +1,18 @@
 function postAsync(){
 
     var url = "/";
-    var fields = "anime=nanbaka&episode=12";
+    var fields = "";
 
-    console.log(document.getElementById('animeForm'));
+    var form = document.getElementById('animeForm');
+    var formData = new FormData(form);
+
+    // field[0] = input.id
+    // field[1] = input.value
+    for (var field of formData){
+        fields += field[0] + "=" + field[1] + "&"
+    }
+    // Removing last &
+    fields = fields.slice(0, -1);
 
     var req;
 
@@ -32,7 +41,7 @@ function postAsync(){
         req.onreadystatechange = function() {
             if(req.readyState == XMLHttpRequest.DONE){
                 if (req.status == 200){
-                    console.log(req.responseText);
+                    console.log("Form succesfully sent!");
                 }
                 else{
                     console.log("XHR error: " + req.status + " " +req.statusText);

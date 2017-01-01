@@ -9,8 +9,8 @@
         <h1><%= title %></h1>
         <p>Welcome to <%= title %>!</p>
         <p>Current Season: <%= season + " " + year %></p><br><br>
-        <form>
-            <table id="animeForm" style="text-align:center;">
+        <form id="animeForm">
+            <table style="text-align:center;">
                 <tr>
                     <th>Image</th>
                     <th>Name</th>
@@ -22,7 +22,7 @@
                         <td><img src="<%= anime.image_url_lge %>" title="<%= anime.title_romaji %>" alt="<%= anime.title_romaji %>"></td>
                         <td><%= anime.title_romaji %></td>
                         <td><%= anime.total_episodes %></td>
-                        <td><input type="checkbox" name="<%= anime.id %>"></td>
+                        <td><input type="checkbox" name="<%= anime.id %>" value="<%= anime.title_romaji %>"></td>
                     </tr>
                 <% }); %>
             </table>

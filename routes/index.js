@@ -39,10 +39,12 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
 
-    var anime = req.body.anime;
-    var episode = req.body.episode;
+    for (var key in req.body){
+        var attrName = key;
+        var attrValue = req.body[key];
+        console.log(attrName + ": " + attrValue);
+    }
 
-    // res.send(anime + ' ' + episode);
     res.send(req.body);
 });
 

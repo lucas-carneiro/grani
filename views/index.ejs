@@ -25,8 +25,8 @@
                         <td><input type="checkbox" name="<%= anime.id %>" value="<%= anime.title_romaji %>"></td>
                     </tr>
                 <% }); %>
-            </table>
+            </table><br>
+            <input type="text" name="nickname" value="" placeholder="nickname">   <button type="button" onclick="postAsync();">Track Animes</button>
         </form>
-        <button type="button" onclick="postAsync();">Send Animes</button>
     </body>
 </html>

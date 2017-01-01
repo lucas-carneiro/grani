@@ -37,6 +37,7 @@ router.get('/', function(req, res, next) {
     });
 });
 
+/* POST form. */
 router.post('/', function(req, res, next) {
 
     for (var key in req.body){
